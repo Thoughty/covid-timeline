@@ -5,6 +5,9 @@ import styles from '../styles/Home.module.css'
 import { getTimeline } from '../utils/timeline'
 import { Box , Center, Divider,Textarea,Input, Fade, FormControl, FormLabel, Heading, Test, Button} from "@chakra-ui/react"
 import { useForm } from 'react-form-hooks'
+import { firestore } from '../utils/firebase'
+
+
 
 export default function Home() {
 
@@ -14,25 +17,30 @@ export default function Home() {
   const [Desc , setDesc] = useState([])
   const [DateTime , setDateTime] = useState([])
   
-  const submitData = () => {
-    string:UserData = age+'_';
+  const submitData = async () => {
+    var GenderData = '';
+    var UserData = age+'_';
     if(gender == 'หญิง')
     {
       UserData += 'F'
+      GenderData = 'หญิง'
     }
     else
     {
       UserData += 'M'
+      GenderData = 'ชาย'
     }
     UserData += '_'+career.replace(' ','_')
     console.log(UserData)
     try{
-      firebase
-        .firestore()
+        await
+        firestore
         .collection('Timeline')
         .doc(String(UserData))
         .set({
-          
+          เพศ: GenderData,
+          อายุ: age,
+          อาชีพ: career
         })
     }
     catch (err){
@@ -40,9 +48,9 @@ export default function Home() {
     }
   }
 
-  useEffect(()=>{
-    getTimeline();
-  },[]);
+  // useEffect(()=>{
+  //   getTimeline();
+  // },[]);
   return (
     <div id='main' className='row'>
     <div className='Headcolumn'>
@@ -56,18 +64,18 @@ export default function Home() {
     <h3> &nbsp;ข้อมูลผู้ป่วย</h3>
     <FormControl className='Personal-Form'>
       <FormLabel claseName= 'Gender'htmlFor='Gender'>เพศ
-      <Input type="text" onChange={(e) => setGender(e.target.value)}
+      <Input id='Gender' type="text"  onChange={(e) => setGender(e.target.value)}
       ></Input>
       </FormLabel>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <FormLabel claseName= 'Age' htmlFor='Age'>อายุ
-      <Input type="number" onChange={(e) => setAge(e.target.value)}
+      <Input id='Age' type="number" onChange={(e) => setAge(e.target.value) }
       ></Input>
       </FormLabel>
     </FormControl>
     <FormControl className='Personal-Form'>
     <FormLabel claseName= 'Career' htmlFor='Career'>อาชีพ
-      <Input className='Career-Input' type="text" onChange={(e) => setCareer(e.target.value)}
+      <Input id='Career-Input' className='Career-Input' type="text" onChange={(e) => setCareer(e.target.value)}
       ></Input>
       </FormLabel>
     </FormControl>
@@ -79,7 +87,7 @@ export default function Home() {
     <h3> &nbsp;รายละเอียด</h3>
     <FormControl className='Personal-Form'>
       <FormLabel claseName= 'DateTime'htmlFor='DateTime'>วันที่และเวลา
-      <Input className='DateTime-Input' type="datetime-local" onChange={(e) => setDateTime(e.target.value)}
+      <Input className='DateTime-Input' type="datetime-local"  onChange={(e) => setDateTime(e.target.value)}
       ></Input>
       </FormLabel>
      
@@ -90,7 +98,7 @@ export default function Home() {
       ></Textarea>
       </FormLabel>
     </FormControl>
-    <Button className='Submit' onClick={console.log(DateTime)}>+ เพิ่มข้อมูล</Button>
+    <Button className='Submit' onClick={submitData()}>+ เพิ่มข้อมูล</Button>
     </form>
   </div>
 </div>
