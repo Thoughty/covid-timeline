@@ -1,16 +1,142 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;1,100&display=swap');
+
+*{
+   font-family: 'Prompt',sans-serif;
+}
+body{
+    background-color: #012d5e ;
+
+}
+h1{
+    color: #ffc107;
+    font-size: 2vw;
+}
+h3{
+    color: #27a743;
+    padding-top: 15px;
+    padding-left: 10px;
+    
+}
+.column{
+    max-height: 200px;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.Info-Detail, .Personal-Info-Box{
+    background-color: #234973;
+    width: 550px;
+    margin-left: 20%;
+    max-width: 100%;
+}
+.Inforow{
+    height: 300px;
+    padding: 0;
+}
+.Infocolumn{
+    height: 100px;
 }
 
-* {
-  box-sizing: border-box;
+td{
+    color: white;
+}
+td.Gender{
+    text-align: left;
+    padding-left: 25px;
+}
+td.Age{
+   text-align: right;
+   padding-left: 255px;
+}
+.Gender-Choice{
+    width: 200px;
+    height: 30px;
+    margin-left: 25px;
+    color: black;
+}
+.AgeInput{
+    width: 200px;
+    height: 30px;
+    margin-left: 80px;
+    color: black;
+}
+
+.Career, .Date, .Desc{
+    padding: 25px;
+}
+.CareerInput, .DateTimeInput{
+    width: 482px;
+    height: 30px;
+    color: black;
+}
+.DescInput{
+    width: 482px;
+    height: 30px;
+    padding: 50px;
+    color: black;
+}
+.submitDetail{
+    margin-left: 25px;
+    background-color: #ffc107;
+    padding: 10px;
+}
+/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left{
+  left: 0;
+  
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.Personal-Form{
+  display: flex;
+  color: white;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: px;
+  padding: 20px;
+  
+}
+input, Textarea{
+  display: block;
+  border-radius: 5px;
+}
+.Career-Input, .DateTime-Input, .Desc-Input{
+  width: 420px;
+  border-radius: 5px;
+}
+.Submit{
+  margin-left: 62px;
+  padding: 5px;
+  background-color: #ffc107;
+  border-radius: 5px;
+}
+
+.Timeline{
+  border-color: #ffc107;
 }
