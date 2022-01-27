@@ -25,11 +25,11 @@ h3{
     max-height: 200px;
 }
 
-.Info-Detail, .Personal-Info-Box{
-    background-color: #234973;
+.Info-Detail, .Personal-Info-Box, .Form-data{
     width: 550px;
     margin-left: 20%;
     max-width: 100%;
+    padding: 15px;
 }
 .Inforow{
     height: 300px;
@@ -108,9 +108,17 @@ td.Age{
 /* If you want the content centered horizontally and vertically */
 .centered {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.output-Box {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  
 }
 
 .Personal-Form{
@@ -122,21 +130,62 @@ td.Age{
   padding: 20px;
   
 }
-input, Textarea{
+input, Textarea, label{
   display: block;
   border-radius: 5px;
 }
-.Career-Input, .DateTime-Input, .Desc-Input{
-  width: 420px;
+.Career-Input, .DateTime-Input, input.Bottom-row, .Desc-Input{
+  width: 460px;
   border-radius: 5px;
 }
-.Submit{
-  margin-left: 62px;
+.submit{
+  margin-top: 20px;
   padding: 5px;
   background-color: #ffc107;
   border-radius: 5px;
+  font-weight: bold;
+}
+
+select{
+  width: 185px;
 }
 
 .Timeline{
   border-color: #ffc107;
+}
+
+.Top-data, .Bottom-data{
+  min-height: 50%;
+  color: white;
+  margin-left: 35px;
+}
+
+.Top-row{
+  display: flex; 
+  
+}
+
+
+.blank-space{
+  height: 50px;
+  background-color: transparent;
+}
+
+.Top-Box,.Bottom-Box{
+  background-color: #234973;
+  padding-bottom: 30px;
+  border-radius: 5px;
+}
+
+.Patient-detail{
+  background-color: #ffc107;
+  font-size: 1.5vw;
+  font-weight: bolder;
+  padding: 15px;
+  border-radius: 50px;
+}
+
+.Patient-Career{
+  font-size: 1.2vw;
+  
 }
