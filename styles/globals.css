@@ -11,9 +11,12 @@ body{
     background-color: #012d5e ;
 
 }
+.header{
+  margin-left: 315px;
+}
 h1{
     color: #ffc107;
-    font-size: 2vw;
+    font-size: 1.9vw;
 }
 h3{
     color: #27a743;

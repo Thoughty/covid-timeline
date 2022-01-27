@@ -11,84 +11,81 @@ import { firestore } from '../utils/firebase'
 export default function Home() {
 
   const { register, handleSubmit, errors } = useForm();
-  const [Desc,setDesc] = useState([])
-  const [DateTime,setDateTime] = useState([])
-  const [Age,setAge] = useState('')
-  const [Gender,setGender] = useState('')
-  const [Career,setCareer] = useState('')
+  const [Desc, setDesc] = useState([])
+  const [DateTime, setDateTime] = useState([])
+  const [Age, setAge] = useState('')
+  const [Gender, setGender] = useState('')
+  const [Career, setCareer] = useState('')
   var UserData = '';
 
   const onSubmit = (data) => {
     //console.log(data)
-  UserData = data.Age+'_';
-  if(data.Gender == 'หญิง')
-  {
-    UserData += 'F'
-  }
-  else
-  {
-    UserData += 'M'
-  }
-  UserData += '_'+data.Career.replace(' ','_')
-  //console.log(UserData)
-  try{
+    UserData = data.Age + '_';
+    if (data.Gender == 'หญิง') {
+      UserData += 'F'
+    }
+    else {
+      UserData += 'M'
+    }
+    UserData += '_' + data.Career.replace(' ', '_')
+    //console.log(UserData)
+    try {
       firestore
-      .collection('Timeline')
-      .doc(String(UserData))
-      .set({
-        เพศ: data.Gender,
-        อายุ: data.Age,
-        อาชีพ: data.Career
-      }).then(updateDesc(UserData,data))
+        .collection('Timeline')
+        .doc(String(UserData))
+        .set({
+          เพศ: data.Gender,
+          อายุ: data.Age,
+          อาชีพ: data.Career
+        }).then(updateDesc(UserData, data))
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
-  catch (err){
-    console.log(err);
-  }
-}
-  const updateDesc = (UserData,data) => {
-    var DateTimeLog = String(data.DateTime).replaceAll('-','').replaceAll('T','_').replaceAll(':','')
+  const updateDesc = (UserData, data) => {
+    var DateTimeLog = String(data.DateTime).replaceAll('-', '').replaceAll('T', '_').replaceAll(':', '')
     //console.log(DateTimeLog)
     //console.log(UserData)
-    try{
+    try {
       firestore
-      .collection('Timeline')
-      .doc(String(UserData))
-      .collection('UserTimeline')
-      .doc(String(DateTimeLog))
-      .set({
-        DateTime: data.DateTime,
-        Desc: data.Desc
-      }).then(getTimeline(UserData)).then(getUserDetail(UserData)).then(getDateTime(UserData))
+        .collection('Timeline')
+        .doc(String(UserData))
+        .collection('UserTimeline')
+        .doc(String(DateTimeLog))
+        .set({
+          DateTime: data.DateTime,
+          Desc: data.Desc
+        }).then(getTimeline(UserData)).then(getUserDetail(UserData)).then(getDateTime(UserData))
     }
-    catch (err)
-    {
+    catch (err) {
       console.log(err);
     }
   }
 
   const getTimeline = (UserData) => {
-    
-    firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').onSnapshot(
-       snapshot => {
-           snapshot.docs.map(doc => 
-            setDesc(doc.data().Desc)
-           )
-       }
-   );   
-};
-const getDateTime = (UserData) => {
-    
-  firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').onSnapshot(
-     snapshot => {
-         snapshot.docs.map(doc => 
-          setDateTime(doc.data().DateTime)
-         )
-     }
- );   
-};
 
-  const getUserDetail = async (UserData) =>{
-   const User = await firestore.collection('Timeline').doc(String(UserData)).get()
+    firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').onSnapshot(
+      snapshot => {
+        snapshot.docs.map(doc =>
+          setDesc(doc.data().Desc)
+        )
+      }
+    );
+  };
+  const getDateTime = (UserData) => {
+
+    firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').onSnapshot(
+      snapshot => {
+        snapshot.docs.map(doc =>
+          setDateTime(doc.data().DateTime)
+        )
+      }
+    );
+  };
+
+  const getUserDetail = async (UserData) => {
+    const User = await firestore.collection('Timeline').doc(String(UserData)).get()
     //console.log(User.data().อายุ)
     setAge(User.data().อายุ)
     setGender(User.data().เพศ)
@@ -132,7 +129,7 @@ const getDateTime = (UserData) => {
             </div>
             <div className='blank-space'></div>
             <div className='Bottom-Box'>
-            <h3>รายละเอียด</h3>
+              <h3>รายละเอียด</h3>
               <div className='Bottom-data'>
                 <div className='Bottom-row'>
                   <div>
@@ -156,16 +153,17 @@ const getDateTime = (UserData) => {
       </div>
 
       <div className="split right">
-        
+
         <div className="output-Box">
           <div className='Timeline'>
-            <h1>Timeline</h1>
-            {Gender != '' ?(
-            <div className='Patient-detail'>ผู้ป่วย{Gender} อายุ {Age} ปี
-            <div className='Patient-Career'>
-              อาชีพ {Career}
-            </div>
-            </div>):(<div></div>)}
+          {Gender != '' ? (
+              <h1>Timeline</h1>) : (<div></div>)}
+            {Gender != '' ? (
+              <div className='Patient-detail'>ผู้ป่วย{Gender} อายุ {Age} ปี
+                <div className='Patient-Career'>
+                  อาชีพ {Career}
+                </div>
+              </div>) : (<div></div>)}
             <div className='Timeline-Output'></div>
           </div>
         </div>
