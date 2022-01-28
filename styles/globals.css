@@ -193,11 +193,13 @@ select{
   
 }
 .Timeline-Output{
-    position: absolute;
-    top: 100%;
+    position: relative;
+    top: 29.5%;
+    margin-right: 200px;
     right: 0;
     left: 0;
     bottom: 0;
+
 }
 .date{
   margin-right: 50px;
@@ -206,6 +208,28 @@ select{
 }
 .verticle-timeline-content{
   padding-right: 200px;
+  white-space: nowrap;
   display: flex;
+}
+.vertical-timeline-element-time{
+  margin-right: 10px;
+}
+.vertical-timeline-element-desc{
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: min-content;
+}
+.deleteButton{
+  
+  display: inline-block;
+  position: absolute;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 5px 0 0;
+  top:0;
+  right: 0;
+
 }
 
