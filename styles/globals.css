@@ -192,3 +192,20 @@ select{
   font-size: 1.2vw;
   
 }
+.Timeline-Output{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+.date{
+  margin-right: 50px;
+  font-weight: bold;
+  color: #ffc107;
+}
+.verticle-timeline-content{
+  padding-right: 200px;
+  display: flex;
+}
+

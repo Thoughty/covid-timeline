@@ -2,11 +2,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
-import { Box, Center, Divider, Textarea, Input, Fade, FormControl, FormLabel, Heading, Test, Button } from "@chakra-ui/react"
+import { Box, Center, Divider, Textarea, Input, Fade, FormControl, FormLabel, Heading, Test, Button, background } from "@chakra-ui/react"
 import { useForm } from 'react-hook-form'
 import { firestore } from '../utils/firebase'
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
+import "react-vertical-timeline-component/style.min.css";
 
-
+let timelineElement = [];
 
 export default function Home() {
 
@@ -16,8 +18,21 @@ export default function Home() {
   const [Age, setAge] = useState('')
   const [Gender, setGender] = useState('')
   const [Career, setCareer] = useState('')
+  const [dataObj, setDataobj] = useState([])
+  const [User, setUser] = useState('')
+  const [Data, setData] = useState(new Map())
+  const DescList = [];
+  const Timeline = new Map()
+  var count = 0
   var UserData = '';
 
+
+  const prepareData = () => {
+    for (var i = 0; i < Desc.length; i++) {
+      DescList.push(<h4>{DateTime[i]}</h4>)
+    }
+    //console.log(DescList)
+  }
   const onSubmit = (data) => {
     //console.log(data)
     UserData = data.Age + '_';
@@ -29,6 +44,7 @@ export default function Home() {
     }
     UserData += '_' + data.Career.replace(' ', '_')
     //console.log(UserData)
+    setUser(UserData);
     try {
       firestore
         .collection('Timeline')
@@ -56,32 +72,35 @@ export default function Home() {
         .set({
           DateTime: data.DateTime,
           Desc: data.Desc
-        }).then(getTimeline(UserData)).then(getUserDetail(UserData)).then(getDateTime(UserData))
+        }).then(getTimeline(UserData)).then(getUserDetail(UserData))
     }
     catch (err) {
       console.log(err);
     }
   }
 
-  const getTimeline = (UserData) => {
-
-    firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').onSnapshot(
+  const getTimeline = async (UserData) => {
+    count = 0;
+    firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').orderBy('DateTime', 'asc').onSnapshot(
       snapshot => {
-        snapshot.docs.map(doc =>
-          setDesc(doc.data().Desc)
-        )
+        setDesc(snapshot.docs.map(doc => doc.data()))
       }
     );
+
+    /*Desc.forEach((doc)=>
+    console.log(doc))*/
+    console.log(Desc)
+    //console.log(Timeline.get('2022-01-20T11:07'))
   };
   const getDateTime = (UserData) => {
 
     firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').onSnapshot(
       snapshot => {
-        snapshot.docs.map(doc =>
-          setDateTime(doc.data().DateTime)
-        )
+        setDateTime(snapshot.docs.map(doc => String(doc.data().DateTime)))
       }
+
     );
+    //console.log(DateTime)
   };
 
   const getUserDetail = async (UserData) => {
@@ -156,7 +175,7 @@ export default function Home() {
 
         <div className="output-Box">
           <div className='Timeline'>
-          {Gender != '' ? (
+            {Gender != '' ? (
               <h1>Timeline</h1>) : (<div></div>)}
             {Gender != '' ? (
               <div className='Patient-detail'>ผู้ป่วย{Gender} อายุ {Age} ปี
@@ -164,8 +183,30 @@ export default function Home() {
                   อาชีพ {Career}
                 </div>
               </div>) : (<div></div>)}
-            <div className='Timeline-Output'></div>
           </div>
+          <div className='Timeline-Output'>
+              <VerticalTimeline
+              
+              >
+              {Desc.map((e)=>{
+                return(
+                  <VerticalTimelineElement dateClassName='date'
+                  className='Timeline-Hover'
+                  date={e.DateTime.split('T')[0]}
+                  iconStyle={{background:'#ffc107'}}
+                  position='right'
+                  iconClassName='iconTimeline'
+                  >
+                    <div className='verticle-timeline-content'>
+                    <div className='vertical-timeline-element-time'>{String(e.DateTime.split('T')[1]).replaceAll('-','/')}</div>
+                    <div className='vertical-timeline-element-desc'>{e.Desc}</div>
+                    <button>x</button>
+                    </div>
+                  </VerticalTimelineElement>
+                )
+              })}
+              </VerticalTimeline>
+            </div>
         </div>
       </div>
     </div>
