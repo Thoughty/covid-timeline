@@ -177,6 +177,7 @@ export default function Home() {
               {Desc.map((e) => {
                 return (
                   <VerticalTimelineElement dateClassName='date'
+                    key={e.DateTime}
                     className='Timeline-Hover'
                     date={e.DateTime.split('T')[0].replaceAll('-', '/')}
                     iconStyle={{ background: '#ffc107' }}
