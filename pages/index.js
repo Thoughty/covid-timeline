@@ -2,13 +2,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
-import { Box, Center, Divider, Textarea, Input, Fade, FormControl, FormLabel, Heading, Test, Button, background } from "@chakra-ui/react"
+import { Box, Center, Divider, Textarea, Input, Fade, FormControl, FormLabel, Heading, Test, Button, background, useQuery } from "@chakra-ui/react"
 import { useForm } from 'react-hook-form'
 import { firestore } from '../utils/firebase'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 import "react-vertical-timeline-component/style.min.css";
 
-let timelineElement = [];
 
 export default function Home() {
 
@@ -18,21 +17,9 @@ export default function Home() {
   const [Age, setAge] = useState('')
   const [Gender, setGender] = useState('')
   const [Career, setCareer] = useState('')
-  const [dataObj, setDataobj] = useState([])
   const [UserCol, setUser] = useState('')
-  const [Data, setData] = useState(new Map())
-  const DescList = [];
-  const Timeline = new Map()
-  var count = 0
   var UserData = '';
 
-
-  const prepareData = () => {
-    for (var i = 0; i < Desc.length; i++) {
-      DescList.push(<h4>{DateTime[i]}</h4>)
-    }
-    //console.log(DescList)
-  }
   const onSubmit = (data) => {
     //console.log(data)
     UserData = data.Age + '_';
@@ -80,7 +67,6 @@ export default function Home() {
   }
 
   const getTimeline = async (UserData) => {
-    count = 0;
     firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').orderBy('DateTime', 'asc').onSnapshot(
       snapshot => {
         setDesc(snapshot.docs.map(doc => doc.data()))
@@ -92,19 +78,9 @@ export default function Home() {
     console.log(Desc)
     //console.log(Timeline.get('2022-01-20T11:07'))
   };
-  const getDateTime = (UserData) => {
-
-    firestore.collection('Timeline').doc(String(UserData)).collection('UserTimeline').onSnapshot(
-      snapshot => {
-        setDateTime(snapshot.docs.map(doc => String(doc.data().DateTime)))
-      }
-
-    );
-    //console.log(DateTime)
-  };
-  const deleteDesc = async (DescDoc) =>{
+  const deleteDesc = async (DescDoc) => {
     try {
-       await firestore.collection('Timeline').doc(String(UserCol)).collection('UserTimeline').doc(String(DescDoc)).delete()
+      await firestore.collection('Timeline').doc(String(UserCol)).collection('UserTimeline').doc(String(DescDoc)).delete()
     } catch (err) {
       console.log(err)
     }
@@ -181,7 +157,7 @@ export default function Home() {
       <div className="split right">
 
         <div className="output-Box">
-          <div className='Timeline'>
+          <div className='Timeline w3-animate-top'>
             {Gender != '' ? (
               <h1>Timeline</h1>) : (<div></div>)}
             {Gender != '' ? (
@@ -195,31 +171,32 @@ export default function Home() {
         </div>
         <div className='Timeline-Output'>
           {Desc.length != 0 ? (
-          <VerticalTimeline
+            <VerticalTimeline
 
-          >
-            {Desc.map((e) => {
-              return (
-                <VerticalTimelineElement dateClassName='date'
-                  className='Timeline-Hover'
-                  date={e.DateTime.split('T')[0].replaceAll('-', '/')}
-                  iconStyle={{ background: '#ffc107' }}
-                  position='right'
-                  iconClassName='iconTimeline'
-                >
-                  
+            >
+              {Desc.map((e) => {
+                return (
+                  <VerticalTimelineElement dateClassName='date'
+                    className='Timeline-Hover'
+                    date={e.DateTime.split('T')[0].replaceAll('-', '/')}
+                    iconStyle={{ background: '#ffc107' }}
+                    position='right'
+                    iconClassName='iconTimeline'
+                    contentStyle={{ background: '#234973', color: '#fff' }}
+                  >
+
                     <div className='vertical-timeline-element-time'>
                       <h4>{String(e.DateTime.split('T')[1])}</h4>
-                      <button className='deleteButton' onClick={() => deleteDesc(String(e.DateTime).replaceAll('-','').replaceAll('T','_').replaceAll(':',''))} >x</button>
-                      </div>
+                      <button className='deleteButton' onClick={() => deleteDesc(String(e.DateTime).replaceAll('-', '').replaceAll('T', '_').replaceAll(':', ''))} >x</button>
+                    </div>
                     <p>{e.Desc}</p>
-                   
-                  
-                  
-                </VerticalTimelineElement>
-              )
-            })}
-          </VerticalTimeline>):(<div></div>)}
+
+
+
+                  </VerticalTimelineElement>
+                )
+              })}
+            </VerticalTimeline>) : (<div></div>)}
         </div>
       </div>
     </div>
